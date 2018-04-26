@@ -11,6 +11,7 @@ config_version=3
 [application]
 
 config/name="necro-wars"
+run/main_scene="res://scenes/Map.tscn"
 config/icon="res://icon.png"
 
 [rendering]
