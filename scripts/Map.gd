@@ -5,6 +5,7 @@ const CURSOR_SIZE = 32
 
 func _init():
 	self.set_process_input(true)
+	
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -20,7 +21,7 @@ func _input(event):
 			if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down") :
 				
 				# CURSOR MOTION
-				var cursor_pos = get_node("cursor").global_position
+				var cursor_pos = get_node("cursor").position
 				if event.is_action("ui_right") :
 					cursor_pos.x += CURSOR_SIZE
 				elif event.is_action("ui_left") :
@@ -33,14 +34,21 @@ func _input(event):
 				
 				# Change cursor position
 				if is_in_grid(cursor_pos) :
-					get_node("cursor").global_position = cursor_pos
+					get_node("cursor").position = cursor_pos
 
 func _process(delta):
-	pass
+	
+	var cursor_pos = get_node("cursor").position
+	
+	# If cursor is on character
+	var ch_pos = get_node("character").position
+#	if ch_pos == cursor_pos :
+#		var zone = get_node("character").move_zone
+	
 
 # To check if something is in the grid or not
 func is_in_grid(var pos) :
-	if pos.x >= self.global_position.x - GRID_SIZE / 2 and pos.x < self.global_position.x + GRID_SIZE / 2 and pos.y >= self.global_position.y - GRID_SIZE / 2 and pos.y < self.global_position.y + GRID_SIZE / 2 :
+	if pos.x >= 0 and pos.x < GRID_SIZE and pos.y >= 0 and pos.y < GRID_SIZE :
 		return true
 	
 	return false
