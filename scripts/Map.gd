@@ -31,7 +31,7 @@ func _input(event):
 						character_selected.show_move_zone()
 				elif cursor_on_character == null :
 					# must be changed to a function
-					character_selected.position = cursor_pos
+					character_selected.move_to(cursor_pos)
 					character_selected.hide_move_zone()
 					character_selected = null
 			
@@ -52,8 +52,11 @@ func _input(event):
 			if is_in_grid(cursor_pos) :
 				
 				# change cursor position
-				get_node("cursor").position = cursor_pos
-				
+				if character_selected != null : 
+					if character_selected.is_in_move_zone(cursor_pos) :
+						get_node("cursor").position = cursor_pos
+				else :
+					get_node("cursor").position = cursor_pos
 				
 				# if cursor was on a character
 				if cursor_on_character != null :
