@@ -3,6 +3,8 @@ extends Node2D
 const GRID_SIZE = 512 # in pixel
 const CURSOR_SIZE = 32
 
+var cursor_on_character = null
+
 func _init():
 	self.set_process_input(true)
 	
@@ -32,19 +34,25 @@ func _input(event):
 				elif event.is_action("ui_down") :
 					cursor_pos.y += CURSOR_SIZE
 				
-				# Change cursor position
+				# if movement is valid
 				if is_in_grid(cursor_pos) :
+					# change cursor position
 					get_node("cursor").position = cursor_pos
+					
+					# if cursor was on a character
+					if cursor_on_character != null :
+						cursor_on_character.hide_move_zone()
+						cursor_on_character = null
+					
+					# if cursor is on a character
+					if cursor_pos == get_node("character").position :
+						cursor_on_character = get_node("character")
+						cursor_on_character.show_move_zone()
+
 
 func _process(delta):
-	
-	var cursor_pos = get_node("cursor").position
-	
-	# If cursor is on character
-	var ch_pos = get_node("character").position
-#	if ch_pos == cursor_pos :
-#		var zone = get_node("character").move_zone
-	
+	pass
+
 
 # To check if something is in the grid or not
 func is_in_grid(var pos) :

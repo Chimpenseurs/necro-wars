@@ -3,6 +3,7 @@ extends Node2D
 var speed = 3
 
 var move
+var move_zone_texture = "res://assets/img/move.png"
 
 func _init(var name = "godot"):
 	self.name = name
@@ -14,6 +15,8 @@ func _init(var name = "godot"):
 func _ready():
 	
 	gen_move_zone()
+	
+	get_node("move_zone").visible = false;
 
 func gen_move_zone() :
 	
@@ -24,11 +27,17 @@ func gen_move_zone() :
 			
 			var sprite = Sprite.new()
 			sprite.centered = false
-			sprite.texture = load("res://assets/img/move.png")
+			sprite.texture = load(move_zone_texture)
 			sprite.position = cell*32
 			
 			
 			get_node("move_zone").add_child(sprite)
+
+func show_move_zone() :
+	get_node("move_zone").visible = true
+
+func hide_move_zone() :
+	get_node("move_zone").visible = false
 
 # get the circle around the character
 func get_circle(var radius) :
