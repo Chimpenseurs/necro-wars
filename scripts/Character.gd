@@ -1,6 +1,9 @@
 extends Node2D
 
-var speed = 3
+var carac = {
+	"speed": 3,
+	"strengh": 5
+}
 
 var move
 var move_zone_texture = "res://assets/img/move.png"
@@ -8,7 +11,7 @@ var move_zone_texture = "res://assets/img/move.png"
 func _init(var name = "godot"):
 	self.name = name
 	
-	self.move = speed
+	self.move = self.carac["speed"]
 	
 	add_to_group("characters")
 
