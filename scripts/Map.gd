@@ -6,6 +6,8 @@ const CURSOR_SIZE = 32
 var cursor_on_character = null
 var character_selected = null
 
+signal on_character
+
 func _init():
 	self.set_process_input(true)
 	
@@ -69,6 +71,9 @@ func _input(event):
 					cursor_on_character = get_node("character")
 					if character_selected == null :
 						cursor_on_character.show_move_zone()
+				
+				if character_selected == null :
+					emit_signal("on_character", cursor_on_character)
 
 
 func _process(delta):

@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/img/cursor.png" type="Texture" id=4]
 
-[node name="map" type="Node2D" index="0"]
+[node name="map" type="Node2D"]
 
 script = ExtResource( 1 )
 
