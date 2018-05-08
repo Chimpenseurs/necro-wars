@@ -89,7 +89,6 @@ func _input(event):
 				
 				# if cursor is on a character
 				for character in get_tree().get_nodes_in_group("characters") :
-					print(character.position)
 					if cursor_pos == character.position :
 						cursor_on_character = character
 						if character_selected == null :
