@@ -7,21 +7,28 @@ func set_character(var character) :
 	
 	var h_sprite = get_node("sprite")
 	var h_characs = get_node("characteristics")
+	var h_name = get_node("c_name")
 	
+	# init default
 	if h_sprite.texture != null :
 		h_sprite.texture = null
 	
-	# init default
+	if not h_name.text.empty() :
+		h_name.text = ""
+	
 	for child in h_characs.get_children() :
 		child.queue_free()
 	
 	if character != null :
 		
-		#Load texture
+		# Load texture
 		var c_sprite = character.get_node("sprite")
 		h_sprite.texture = load(c_sprite.texture.resource_path)
 		
-		#Load characteristics
+		# Load character's name
+		h_name.text = character.c_name
+		
+		# Load characteristics
 		var c_characs = character.characteristics
 		for key in c_characs.keys() :
 			# Load characteristic name
