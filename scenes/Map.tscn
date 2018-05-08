@@ -1,9 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/Map.gd" type="Script" id=1]
 [ext_resource path="res://assets/img/grid.png" type="Texture" id=2]
-[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/img/cursor.png" type="Texture" id=4]
 
 [node name="map" type="Node2D" index="0"]
 
@@ -14,16 +12,5 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 centered = false
 _sections_unfolded = [ "Offset", "Transform" ]
-
-[node name="player" parent="." index="1" instance=ExtResource( 3 )]
-
-position = Vector2( 320, 320 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="cursor" type="Sprite" parent="." index="2"]
-
-texture = ExtResource( 4 )
-centered = false
-_sections_unfolded = [ "Offset" ]
 
 

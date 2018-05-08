@@ -1,6 +1,6 @@
 extends Node2D
 
-var c_name
+var c_name = ""
 
 var characteristics = {
 	"speed": 3,
@@ -10,18 +10,19 @@ var characteristics = {
 var move
 var move_zone_texture = "res://assets/img/move.png"
 
-var sprite_texture_path
+var sprite_texture_path = ""
 
-func _init(var name, var sprite_texture_path):
+func init(var name, var sprite_texture_path):
 	self.c_name = name
 	
 	self.sprite_texture_path = sprite_texture_path
 	
+
+func _ready():
+	
 	self.move = self.characteristics["speed"]
 	
 	add_to_group("characters")
-
-func _ready():
 	
 	# Load sprite texture
 	self.get_node("sprite").texture = load(sprite_texture_path)

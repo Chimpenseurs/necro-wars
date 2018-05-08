@@ -1,8 +1,9 @@
 extends "res://scripts/Character.gd"
 
 
-func _init(var name = "Godot").(name, "res://icon.png") :
-	self.add_to_group("players")
+func init(var name, var sprite_texture_path) :
+	self.c_name = name
+	self.sprite_texture_path = sprite_texture_path
 
 func _ready():
-	pass
+	self.add_to_group("players")

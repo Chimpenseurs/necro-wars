@@ -13,9 +13,29 @@ func _init():
 	
 
 func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
+	
+	var p_scene = load("res://scenes/Player.tscn")
+	
+	var player01 = p_scene.instance()
+	player01.init("Red Godot", "res://assets/img/red_godot.png")
+	player01.position = Vector2(256, 256)
+	
+	
+	var player02 = p_scene.instance()
+	player02.init("Blue Godot", "res://icon.png")
+	player02.position = Vector2(128, 128)
+	
+	
+	self.add_child(player01)
+	self.add_child(player02)
+	
+	
+	# Load cursor
+	var cursor = Sprite.new()
+	cursor.name = "cursor"
+	cursor.set_centered(false)
+	cursor.texture = load("res://assets/img/cursor.png")
+	self.add_child(cursor)
 
 func _input(event):
 	
@@ -36,6 +56,7 @@ func _input(event):
 					character_selected.move_to(cursor_pos)
 					character_selected.hide_move_zone()
 					character_selected = null
+			
 			
 			# CURSOR MOTION
 			if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down") :
@@ -67,10 +88,12 @@ func _input(event):
 					cursor_on_character = null
 				
 				# if cursor is on a character
-				if cursor_pos == get_node("player").position :
-					cursor_on_character = get_node("player")
-					if character_selected == null :
-						cursor_on_character.show_move_zone()
+				for character in get_tree().get_nodes_in_group("characters") :
+					print(character.position)
+					if cursor_pos == character.position :
+						cursor_on_character = character
+						if character_selected == null :
+							cursor_on_character.show_move_zone()
 				
 				if character_selected == null :
 					emit_signal("on_character", cursor_on_character)
