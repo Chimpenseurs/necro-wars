@@ -10,14 +10,21 @@ var characteristics = {
 var move
 var move_zone_texture = "res://assets/img/move.png"
 
-func _init(var name = "Godot"):
+var sprite_texture_path
+
+func _init(var name, var sprite_texture_path):
 	self.c_name = name
+	
+	self.sprite_texture_path = sprite_texture_path
 	
 	self.move = self.characteristics["speed"]
 	
 	add_to_group("characters")
 
 func _ready():
+	
+	# Load sprite texture
+	self.get_node("sprite").texture = load(sprite_texture_path)
 	
 	gen_move_zone()
 	

@@ -67,8 +67,8 @@ func _input(event):
 					cursor_on_character = null
 				
 				# if cursor is on a character
-				if cursor_pos == get_node("character").position :
-					cursor_on_character = get_node("character")
+				if cursor_pos == get_node("player").position :
+					cursor_on_character = get_node("player")
 					if character_selected == null :
 						cursor_on_character.show_move_zone()
 				
