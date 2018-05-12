@@ -8,6 +8,7 @@ func set_character(var character) :
 	var h_sprite = get_node("sprite")
 	var h_characs = get_node("characteristics")
 	var h_name = get_node("c_name")
+	var h_life = get_node("life")
 	
 	# init default
 	if h_sprite.texture != null :
@@ -15,6 +16,9 @@ func set_character(var character) :
 	
 	if not h_name.text.empty() :
 		h_name.text = ""
+	
+	if not h_life.text.empty() :
+		h_life.text = ""
 	
 	for child in h_characs.get_children() :
 		child.queue_free()
@@ -27,6 +31,12 @@ func set_character(var character) :
 		
 		# Load character's name
 		h_name.text = character.c_name
+		
+		# Load character's life
+		h_life.text = "Life : "
+		h_life.text += str(character.life_current)
+		h_life.text +=  " / " 
+		h_life.text += str(character.life_max)
 		
 		# Load characteristics
 		var c_characs = character.characteristics

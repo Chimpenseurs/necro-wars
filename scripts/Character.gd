@@ -2,6 +2,9 @@ extends Node2D
 
 var c_name = ""
 
+var life_max = 20
+var life_current = life_max
+
 var characteristics = {
 	"speed": 3,
 	"strengh": 5
