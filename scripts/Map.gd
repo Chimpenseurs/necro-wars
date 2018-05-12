@@ -5,8 +5,10 @@ const CURSOR_SIZE = 32
 
 var cursor_on_character = null
 var character_selected = null
+var current_player = null
 
 signal on_character
+signal at_player
 
 func _init():
 	self.set_process_input(true)
@@ -17,11 +19,13 @@ func _ready():
 	var p_scene = load("res://scenes/Player.tscn")
 	
 	var player01 = p_scene.instance()
+	player01.name = "player01"
 	player01.init("Red Godot", "res://assets/img/red_godot.png")
 	player01.position = Vector2(256, 256)
 	
 	
 	var player02 = p_scene.instance()
+	player02.name = "player02"
 	player02.init("Blue Godot", "res://icon.png")
 	player02.position = Vector2(128, 128)
 	
@@ -29,6 +33,9 @@ func _ready():
 	self.add_child(player01)
 	self.add_child(player02)
 	
+	# set current player
+	current_player = player01
+	get_parent().at_player(current_player)
 	
 	# Load cursor
 	var cursor = Sprite.new()
@@ -49,13 +56,19 @@ func _input(event):
 			if event.is_action("ui_select") :
 				if character_selected == null :
 					if cursor_on_character != null :
-						character_selected = cursor_on_character
-						character_selected.show_move_zone()
+						if cursor_on_character == current_player :
+							character_selected = cursor_on_character
+							character_selected.show_move_zone()
 				elif cursor_on_character == null :
 					# must be changed to a function
 					character_selected.move_to(cursor_pos)
 					character_selected.hide_move_zone()
 					character_selected = null
+					
+					#change turn
+					var no = int(current_player.name.right(6))
+					current_player = get_node("player0" + str(no % 2 + 1))
+					emit_signal("at_player", current_player)
 			
 			# CHARACTER DESELECTION
 			if event.is_action("ui_cancel") :
