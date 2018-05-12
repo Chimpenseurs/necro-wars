@@ -57,6 +57,13 @@ func _input(event):
 					character_selected.hide_move_zone()
 					character_selected = null
 			
+			# CHARACTER DESELECTION
+			if event.is_action("ui_cancel") :
+				if character_selected != null :
+					character_selected.hide_move_zone()
+					character_selected = null
+			
+			
 			
 			# CURSOR MOTION
 			if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down") :
