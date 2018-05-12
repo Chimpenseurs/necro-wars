@@ -7,7 +7,8 @@ var life_current = life_max
 
 var characteristics = {
 	"speed": 3,
-	"strengh": 5
+	"strengh": 5,
+	"range": 1
 }
 
 var move
@@ -31,26 +32,51 @@ func _ready():
 	self.get_node("sprite").texture = load(sprite_texture_path)
 	
 	gen_move_zone()
-	
 	get_node("move_zone").visible = false;
+	
+	gen_attack_zone()
+	get_node("attack_zone").visible = false;
 
 
 func move_to(var position) :
 	
 	self.position = position
 	
-	gen_move_zone()
 	
+	gen_move_zone()
 	get_node("move_zone").visible = false;
+	
+	gen_attack_zone()
+	get_node("attack_zone").visible = false;
 
+
+func gen_attack_zone() :
+	var attack_zone = get_node("attack_zone")
+	
+	for child in attack_zone.get_children() :
+		child.queue_free()
+	
+	for i in range(self.characteristics["range"]) :
+		var cells = get_circle(self.move + i + 1)
+		
+		for cell in cells :
+			if get_parent().is_in_grid(self.position + cell*32) :
+				
+				var sprite = Sprite.new()
+				sprite.centered = false
+				sprite.texture = load("res://assets/img/attack.png")
+				sprite.position = cell*32
+				
+				
+				attack_zone.add_child(sprite)
 
 
 func gen_move_zone() :
 	
 	var move_zone = get_node("move_zone")
 	
-	for sprite in move_zone.get_children() :
-		sprite.queue_free()
+	for child in move_zone.get_children() :
+		child.queue_free()
 	
 	for i in range(self.move) :
 		var cells = get_circle(i + 1)
@@ -68,9 +94,11 @@ func gen_move_zone() :
 
 func show_move_zone() :
 	get_node("move_zone").visible = true
+	get_node("attack_zone").visible = true
 
 func hide_move_zone() :
 	get_node("move_zone").visible = false
+	get_node("attack_zone").visible = false
 
 func is_in_move_zone(var position) :
 	

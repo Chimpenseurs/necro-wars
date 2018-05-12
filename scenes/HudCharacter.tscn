@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/HudCharacter.gd" type="Script" id=1]
 
-[node name="hud_character" type="Control" index="0"]
+[node name="hud_character" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
