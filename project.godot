@@ -10,9 +10,13 @@ config_version=3
 
 [application]
 
-config/name="necro-wars"
-run/main_scene="res://scenes/Main.tscn"
+config/name="tacticflesh"
+run/main_scene="res://Level.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "TileSetCutter" )
 
 [rendering]
 
