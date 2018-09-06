@@ -3,7 +3,7 @@
 [ext_resource path="res://cursor/scripts/Cusor.gd" type="Script" id=1]
 [ext_resource path="res://cursor/assets/cursor.png" type="Texture" id=2]
 
-[node name="Cursor" type="Node2D" index="0"]
+[node name="Cursor" type="Node2D"]
 
 scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 1 )
