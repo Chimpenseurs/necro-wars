@@ -14,7 +14,8 @@ script = ExtResource( 1 )
 
 [node name="Godot" type="Node2D" parent="." index="1"]
 
-position = Vector2( 64, 128 )
+editor/display_folded = true
+position = Vector2( 64, 0 )
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Godot" index="0"]

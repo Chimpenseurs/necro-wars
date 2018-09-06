@@ -17,7 +17,7 @@ func set_target(new_target):
 	target = new_target
 
 # State machine callback called during transition when entering this state
-func _on_enter_state(): pass
+func _on_enter_state(data): pass
 
 # State machine callback called during transition when leaving this state
-func _on_leave_state(): pass
+func _on_leave_state(data): pass

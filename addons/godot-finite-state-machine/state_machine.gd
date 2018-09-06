@@ -131,7 +131,7 @@ func get_transition(state_id):
 	else:
 		print("Cannot get transition, invalid state: ", state_id)
 
-func transition(state_id):
+func transition(state_id, data):
 	"""
 	Transition to new state by state id.
 	Callbacks will be called on the from and to states if the states have implemented them.
@@ -143,11 +143,11 @@ func transition(state_id):
 	var from_state = get_state(current_state)
 	var to_state = get_state(state_id)
 
-	if from_state.has_method("_on_leave_state"): from_state._on_leave_state()
-	if to_state.has_method("_on_enter_state"): to_state._on_enter_state()
+	if from_state.has_method("_on_leave_state"): from_state._on_leave_state(data)
+	if to_state.has_method("_on_enter_state"): to_state._on_enter_state(data)
 
 	set_current_state(state_id)
-
+	
 func _process(delta):
 	"""
 	Callback to handle _process(). Must be called manually by code
