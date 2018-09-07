@@ -7,5 +7,11 @@ func _ready():
 	# Initialization here
 	pass
 
+func _process(delta):
+	self.position = pos * 32
+
 func get_pos():
 	return pos
+
+func move(pos):
+	self.pos = pos
