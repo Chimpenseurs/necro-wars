@@ -1,6 +1,6 @@
 extends Node2D
 
-const Dcell = preload("./common/scripts/Dijkstra.gd")
+const LevelApi = preload("./common/scripts/LevelApi.gd")
 
 var units = []
 var level_configuration = { "tile_size" : 32 }
@@ -12,8 +12,6 @@ onready var godot = get_node("Godot")
 onready var cursor = get_node("Cursor")
 
 func _ready():
-		# Gently reminder
-	
 	cursor.set_map(self)
 	cursor.set_units(units)
 
@@ -31,36 +29,45 @@ func clear_zones():
 	
 # The pos is in map unit
 func dijkstra(pos, distance_max):
-	var cell = map.get_cellv(pos)
+	# Get the initial cell from the map
+	var cell = map.get_cellv(pos) 
 	if cell == null:
 		#Initial cell does not exist
 		return null
 
-	var initial = Dcell.Dcell.new(cell, 0)
+	var initial = LevelApi.Dcell.new(cell, 0)
 	var stack = [ initial ]
+	# The memory is the result of the disjkstra algortihm
+	# It will contains all accessible nodes
 	var memory = { }
-	
 	memory[ initial.cell.pos ] = initial
-
+	
 	while stack.size() > 0:
-
+		# We find the minimun in the stack
+		# Can be a point to optimize later
 		var current = find_min_in_array(stack)
+
+		# We ask the map to find all neighbors of the current pos
 		var neighbors = map.get_neighbors(current.cell.pos)
+		var distance = LevelApi.cell_distance(current.cell, "Ground") 
 
 		for neighbor in neighbors:
-			var dcell = Dcell.Dcell.new(neighbor, -1)
-	
-			var alt = current.distance + current.cell.speed
+			# We get the distance from the current
+			var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
 
-			if alt  <= distance_max:
-				if !memory.has(dcell.cell.pos):
-					memory[dcell.cell.pos] = dcell
+			if distance != LevelApi.BLOCK  and distance_neighbor != LevelApi.BLOCK:
+				var dcell = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
 
-				if memory[dcell.cell.pos].distance == -1 or alt < memory[dcell.cell.pos].distance:
-					dcell.distance = alt
-					stack.append(dcell)
+				var alt = current.distance + distance
+				if alt  <= distance_max:
+					if !memory.has(dcell.cell.pos):
+						memory[dcell.cell.pos] = dcell
 
+					if memory[dcell.cell.pos].distance == LevelApi.INFINITY or alt < memory[dcell.cell.pos].distance:
+						dcell.distance = alt
+						stack.append(dcell)
 	return memory
+
 
 func find_min_in_array(array):
 	var min_ = null

@@ -6,7 +6,7 @@
 [ext_resource path="res://units/scenes/Godot.tscn" type="PackedScene" id=4]
 [ext_resource path="res://cursor/scenes/Cursor.tscn" type="PackedScene" id=5]
 
-[node name="Level" type="Node2D" index="0"]
+[node name="Level" type="Node2D"]
 
 script = ExtResource( 1 )
 

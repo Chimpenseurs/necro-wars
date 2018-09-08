@@ -1,9 +1,11 @@
 extends Node2D
 
-const Dcell = preload("res://common/scripts/Dijkstra.gd")
+const Level = preload("res://common/scripts/LevelApi.gd")
 
 onready var layer0 = get_node("Layer0")
 onready var layer1 = get_node("Layer1")
+
+onready var metalayer = get_node("LayerMeta")
 
 # Information zones
 onready var zones = get_node("Zones")
@@ -12,12 +14,9 @@ func _ready():
 	pass
 	
 func get_cellv(pos):
-	var layer_cell = layer0.get_cellv(pos)
-	if layer_cell != layer0.INVALID_CELL:
-		if layer_cell == 468:
-			return Dcell.Cell.new(pos, 2)
-		else:
-			return Dcell.Cell.new(pos, 1)
+	var cell_type = metalayer.get_cell_type(pos)
+	if cell_type != null:
+		return Level.Cell.new(pos, cell_type)
 	return null
 
 func is_valid_cellv(pos):
