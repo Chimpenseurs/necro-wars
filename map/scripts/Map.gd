@@ -2,6 +2,7 @@ extends Node2D
 
 const Level = preload("res://common/scripts/LevelApi.gd")
 
+
 onready var layer0 = get_node("Layer0")
 onready var layer1 = get_node("Layer1")
 

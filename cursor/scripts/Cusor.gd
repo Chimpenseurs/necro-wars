@@ -39,6 +39,7 @@ func _ready():
 
 func _process(delta): brain._process(delta)
 
+
 func _input(event):
 	if event.is_pressed() :
 		var cursor_pos = Vector2(0, 0)
@@ -51,10 +52,10 @@ func _input(event):
 				cursor_pos.y -= 1
 			elif event.is_action("ui_down") :
 				cursor_pos.y += 1
-				
+
 			self.pos += cursor_pos
 			self.move(pos)
-			
+
 	brain._input(event)
 
 func set_map(map):
