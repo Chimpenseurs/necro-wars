@@ -19,8 +19,13 @@ func _process(delta):
 
 func _on_enter_state(data):
 	self.unit = data
+	var movement_zone = target.map.dijkstra(self.unit.pos, self.unit.speed)
+	if movement_zone != null:
+		target.map.display_zone(movement_zone)
+	
 	print("Unit selected: " + str(data))
 
 func _on_leave_state(data):
 	self.unit = null
+	target.map.clear_zones()
 	print("Unit de-selected: " + str(data))

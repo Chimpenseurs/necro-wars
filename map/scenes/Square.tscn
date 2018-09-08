@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "tool
+extends Node2D
+
+func _ready():
+	# Called when the node is added to the scene for the first time.
+	# Initialization here
+	pass
+
+func _draw():
+	draw_rect(Rect2(self.position, Vector2(32, 32)), Color(\"#a5d8ff\"), true)
+"
+
+[node name="Square" type="Sprite"]
+
+script = SubResource( 1 )
+
+

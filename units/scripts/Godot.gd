@@ -1,7 +1,7 @@
 extends Node2D
 
 var pos = Vector2(2, 0)
-var distance = 3
+var speed = 3
 
 func _ready():
 	pass
