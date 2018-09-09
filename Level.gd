@@ -1,6 +1,7 @@
 extends Node2D
 
 const LevelApi = preload("./common/scripts/LevelApi.gd")
+const cursor_tscn = preload("res://cursor/scenes/Cursor.tscn")
 
 var units = []
 
@@ -13,13 +14,15 @@ onready var zones = get_node("Zones")
 # Temporary godot
 onready var godot = get_node("Godot")
 
-onready var cursor = get_node("Cursor")
+onready var cursor = cursor_tscn.instance()
 
 func _ready():
-	cursor.set_map(self)
+	cursor.set_level(self)
 	cursor.set_units(units)
-
+	cursor.set_map(self.map)
+	
 	units.append(godot)
+	self.add_child(cursor)
 
 func display_zone(zone):
 	for k in zone.keys():
@@ -28,6 +31,8 @@ func display_zone(zone):
 func get_configuration():
 	return level_configuration
 
+func get_map():
+	return self.map
 
 func clear_zones():
 	zones.clear()
@@ -55,6 +60,7 @@ func dijkstra(pos, distance_max):
 
 		# We ask the map to find all neighbors of the current pos
 		var neighbors = map.get_neighbors(current.cell.pos)
+
 		# We get the distance to leave the cell
 		# TODO So if you stop on a map, you get double bonus/malus?
 		var distance = LevelApi.cell_distance(current.cell, "Ground") 
@@ -80,6 +86,7 @@ func dijkstra(pos, distance_max):
 						dcell.from = current
 						# Add the neighbor to the stack
 						stack.append(dcell)
+
 	return memory
 
 # As Gdscript does not provide priorityqueu,
@@ -94,6 +101,7 @@ func find_min_in_array(array):
 			min_ = 0
 		if array[i].distance < min_:
 			min_ = i
+
 	var cell = array[min_]
 	array.remove(min_)
 	return cell

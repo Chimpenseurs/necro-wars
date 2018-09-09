@@ -17,7 +17,7 @@ func _ready():
 func get_cellv(pos):
 	var cell_type = metalayer.get_cell_type(pos)
 	if cell_type != null:
-		return Level.Cell.new(pos, cell_type)
+		return Level.Cell.new(pos, cell_type, metalayer.map_to_world(pos))
 	return null
 
 func is_valid_cellv(pos):

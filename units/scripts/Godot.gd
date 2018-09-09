@@ -14,6 +14,3 @@ func get_pos():
 
 func move(pos):
 	self.pos = pos
-
-func get_movement_zone():
-	
