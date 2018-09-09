@@ -4,7 +4,7 @@ var pos = Vector2(0, 0)
 var speed = 3
 
 func _ready():
-	pos = self.position / 32
+	self.pos = self.position /32
 
 func get_pos():
 	return pos
