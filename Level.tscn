@@ -3,7 +3,7 @@
 [ext_resource path="res://Level.gd" type="Script" id=1]
 [ext_resource path="res://map/scenes/Map.tscn" type="PackedScene" id=2]
 [ext_resource path="res://map/assets/tilesezones.tres" type="TileSet" id=3]
-[ext_resource path="res://units/scenes/Godot.tscn" type="PackedScene" id=4]
+[ext_resource path="res://units/scenes/Unit.tscn" type="PackedScene" id=4]
 
 [node name="Level" type="Node2D" index="0"]
 
@@ -31,8 +31,22 @@ occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
 
-[node name="Godot" parent="." index="2" instance=ExtResource( 4 )]
+[node name="Units" type="Node2D" parent="." index="2"]
+
+[node name="Godot" parent="Units" index="0" instance=ExtResource( 4 )]
 
 position = Vector2( 64, 64 )
+
+[node name="Godot2" parent="Units" index="1" instance=ExtResource( 4 )]
+
+position = Vector2( 640, 512 )
+
+[node name="Godot3" parent="Units" index="2" instance=ExtResource( 4 )]
+
+position = Vector2( 96, 384 )
+
+[node name="Godot4" parent="Units" index="3" instance=ExtResource( 4 )]
+
+position = Vector2( 768, 320 )
 
 

@@ -3,16 +3,14 @@ extends Node2D
 const LevelApi = preload("./common/scripts/LevelApi.gd")
 const cursor_tscn = preload("res://cursor/scenes/Cursor.tscn")
 
-var units = []
-
 var level_configuration = { "tile_size" : 32 }
 
 # The world map
 onready var map = get_node("Map")
 # Information zones
 onready var zones = get_node("Zones") 
-# Temporary godot
-onready var godot = get_node("Godot")
+# List of units on map
+onready var units = get_node("Units").get_children()
 
 onready var cursor = cursor_tscn.instance()
 
@@ -21,7 +19,6 @@ func _ready():
 	cursor.set_units(units)
 	cursor.set_map(self.map)
 	
-	units.append(godot)
 	self.add_child(cursor)
 
 func display_zone(zone):
