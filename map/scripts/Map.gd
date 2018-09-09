@@ -36,4 +36,5 @@ func get_neighbors(pos):
 		var layer_cell = self.get_cellv(n)
 		if layer_cell != null:
 			neighbors.append(layer_cell)
+
 	return neighbors

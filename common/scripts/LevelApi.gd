@@ -13,6 +13,7 @@ static func cell_distance(cell, unit_type):
 		return 1
 
 class Dcell:
+	var accessible
 	var cell
 	var distance
 	var from
@@ -20,6 +21,7 @@ class Dcell:
 		self.cell = cell
 		self.distance = d
 		self.from = null
+		self.accessible = true
 		
 class Cell:
 	var pos

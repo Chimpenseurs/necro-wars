@@ -63,29 +63,37 @@ func dijkstra(pos, distance_max):
 		var distance = LevelApi.cell_distance(current.cell, "Ground") 
 
 		for neighbor in neighbors:
-			# We get the distance from the current
-			var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
-			
-			# We need to check is we can enter/leave the cell
-			if distance != LevelApi.BLOCK  and distance_neighbor != LevelApi.BLOCK:
-				var dcell = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
-				var alt = current.distance + distance
+			if !memory.has(neighbor.pos):
+				memory[neighbor.pos] = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
 
-				# This one checks if we reached the max distance
-				if alt  <= distance_max:
-					if !memory.has(dcell.cell.pos):
-						memory[dcell.cell.pos] = dcell
-					# Finally the last check of dijkstra (see original algorithm)
-					if memory[dcell.cell.pos].distance == LevelApi.INFINITY or alt < memory[dcell.cell.pos].distance:
-						# We update the distance
-						dcell.distance = alt
-						# Save where we came from
-						dcell.from = current
-						# Add the neighbor to the stack
-						stack.append(dcell)
+			var dcell = memory[neighbor.pos]
+			if dcell.accessible:
+				# We get the distance from the current
+				var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
+				# We need to check is we can enter/leave the cell
+				if distance != LevelApi.BLOCK  and distance_neighbor != LevelApi.BLOCK:
+					var alt = current.distance + distance
+					# This one checks if we reached the max distance
+					if alt  < distance_max:
+						# Finally the last check of dijkstra (see original algorithm)
+						if memory[dcell.cell.pos].distance == LevelApi.INFINITY or alt < memory[dcell.cell.pos].distance:
+							# We update the distance
+							dcell.distance = alt
+							# Save where we came from
+							dcell.from = current
+							# Add the neighbor to the stack
+							stack.append(dcell)
 
-	return memory
+				else:
+					memory[dcell.cell.pos].accessible = false
 
+	return refine_dijkstra_zone(memory)
+
+func refine_dijkstra_zone(zone):
+	for k in zone.keys():
+		if false == zone[k].accessible :
+			zone.erase(k)
+	return zone
 # As Gdscript does not provide priorityqueu,
 # this function extract the min from an array
 func find_min_in_array(array):
