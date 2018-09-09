@@ -22,8 +22,10 @@ func _ready():
 	self.add_child(cursor)
 
 func display_zone(zone):
-	for k in zone.keys():
-		zones.set_cellv(k, 0)
+	for k in zone.keys(): # k is a pos 
+		zones.set_cellv(k, 0) # default move zone sprite
+		if zone[k].ennemy :
+			zones.set_cellv(k, 1) # attack zone sprite
 
 func get_configuration():
 	return level_configuration
@@ -67,6 +69,15 @@ func dijkstra(pos, distance_max):
 				memory[neighbor.pos] = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
 
 			var dcell = memory[neighbor.pos]
+			
+			if dcell.accessible:
+				for u in units :
+					# TODO : parse allies
+					if u.pos != pos and u.pos == dcell.cell.pos:
+						dcell.ennemy = true
+						dcell.accessible = false 
+			
+			
 			if dcell.accessible:
 				# We get the distance from the current
 				var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
@@ -91,7 +102,7 @@ func dijkstra(pos, distance_max):
 
 func refine_dijkstra_zone(zone):
 	for k in zone.keys():
-		if false == zone[k].accessible :
+		if not zone[k].accessible and not zone[k].ennemy :
 			zone.erase(k)
 	return zone
 # As Gdscript does not provide priorityqueu,
