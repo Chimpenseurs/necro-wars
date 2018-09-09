@@ -45,9 +45,10 @@ func update_change():
 				get_child(i).queue_free()
 			
 			
+			index = 0
 			for y in range(ty):
 				for x in range(tx):
-					index = (y * tx) + x
+					index += 1
 					if !is_empty(TextureToCut, x*TileSize.x, y*TileSize.y,TileSize.x, TileSize.y):
 						var sprite = Sprite.new()
 						if PadZeroes:

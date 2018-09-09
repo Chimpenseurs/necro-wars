@@ -12,6 +12,3 @@ func get_pos():
 func move(pos):
 	self.pos = pos
 	self.position = pos * 32
-
-func get_movement_zone():
-	

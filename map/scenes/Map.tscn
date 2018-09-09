@@ -31,6 +31,7 @@ tile_data = PoolIntArray( 0, 82, 0, 1, 82, 0, 2, 82, 0, 3, 82, 0, 4, 82, 0, 5, 8
 
 [node name="Layer1" type="TileMap" parent="." index="1"]
 
+position = Vector2( 0, -0.735092 )
 mode = 0
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )

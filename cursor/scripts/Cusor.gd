@@ -4,7 +4,9 @@ const StateMachineFactory = preload("../../../addons/godot-finite-state-machine/
 
 # attributes of the cursor
 var pos = Vector2(10, 0)
+
 var map
+var level
 var units
 var conf
 
@@ -13,54 +15,72 @@ var tile_size
 
 # Init state machine
 var brain
-const FreeState = preload("free_state.gd")
-const SelectTargetState = preload("select_target_state.gd")
+
+const FreeState         = preload("free_state.gd")
+const OwnTargetSelected = preload("own_target_selected.gd")
+
 onready var smf = StateMachineFactory.new()
 
 # Get sprite
 onready var sprite = self.get_child(0)
 
+
 func _ready():
-	self.conf = self.get_parent().get_configuration()
+	self.level = self.get_parent()
+	self.conf = level.get_configuration()
+	self.map = level.get_map()
+	
+	var cell = map.get_cellv(self.position)
+	self.move(cell)
+
+	print(level.get_map())
+
 	self.tile_size = conf["tile_size"]
-	self.move(self.pos)
+	# self.move(self.pos)
+
 	brain = smf.create({
 		"target": self,
 		"current_state": "free_state",
 		"states": [
-			{"id": "free_state", "state": FreeState},
-			{"id": "select_target_state", "state": SelectTargetState},
+			{ "id": "free_state", "state": FreeState },
+			{ "id": "own_target_selected", "state": OwnTargetSelected },
 		],
 		"transitions": [
-			{"state_id": "free_state", "to_states": ["select_target_state"]},
-			{"state_id": "select_target_state", "to_states": ["free_state"]},
+			{"state_id": "free_state", "to_states": ["own_target_selected"]},
+			{"state_id": "own_target_selected", "to_states": ["free_state"]},
 		]
 	})
 
-func _process(delta): brain._process(delta)
-
+func _process(delta): 
+	brain._process(delta)
 
 func _input(event):
 	if event.is_pressed() :
-		var cursor_pos = Vector2(0, 0)
+		var cursor_movement = Vector2(0, 0)
 		if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down"):
 			if event.is_action("ui_right") :
-				cursor_pos.x += 1
+				cursor_movement.x += 1
 			elif event.is_action("ui_left") :
-				cursor_pos.x -= 1
+				cursor_movement.x -= 1
 			if event.is_action("ui_up") :
-				cursor_pos.y -= 1
+				cursor_movement.y -= 1
 			elif event.is_action("ui_down") :
-				cursor_pos.y += 1
+				cursor_movement.y += 1
 
-			self.pos += cursor_pos
-			self.move(pos)
+			var next_pos = self.pos + cursor_movement
+
+			var cell = map.get_cellv(next_pos)
+			if cell.type != "Bedrock":
+				self.move(cell)
 
 	brain._input(event)
 
 func set_map(map):
 	self.map = map
-	
+
+func set_level(level):
+	self.level = level
+
 func set_units(units):
 	self.units = units
 
@@ -69,6 +89,9 @@ func get_unit_at_pos(pos):
 		if unit.get_pos() == pos:
 			return unit
 	return null
-
-func move(pos2d):
-	self.position = pos2d * self.tile_size
+	
+func move(cell):
+	# Position in pixel
+	self.position = cell.world_pos
+	# Position in the map 
+	self.pos = cell.pos

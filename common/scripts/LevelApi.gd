@@ -23,8 +23,11 @@ class Dcell:
 		
 class Cell:
 	var pos
+	var world_pos
+
 	var type
 
-	func _init(p, type):
+	func _init(p, type, wpos):
 		self.pos = p
 		self.type = type
+		self.world_pos = wpos
