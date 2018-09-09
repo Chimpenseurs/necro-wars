@@ -6,7 +6,7 @@
 [ext_resource path="res://units/scenes/Godot.tscn" type="PackedScene" id=4]
 [ext_resource path="res://cursor/scenes/Cursor.tscn" type="PackedScene" id=5]
 
-[node name="Level" type="Node2D" index="0"]
+[node name="Level" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -33,6 +33,9 @@ format = 1
 tile_data = PoolIntArray(  )
 
 [node name="Godot" parent="." index="2" instance=ExtResource( 4 )]
+
+position = Vector2( 64, 64 )
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 
 [node name="Cursor" parent="." index="3" instance=ExtResource( 5 )]
 
