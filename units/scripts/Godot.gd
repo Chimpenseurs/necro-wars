@@ -1,7 +1,8 @@
 extends Node2D
 
 var pos = Vector2(4, 2)
-var speed = 3
+var speed = 300
+
 
 func _ready():
 	self.move(pos)
