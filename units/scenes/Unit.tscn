@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://units/scripts/Godot.gd" type="Script" id=1]
+[ext_resource path="res://units/scripts/Unit.gd" type="Script" id=1]
 [ext_resource path="res://units/assets/icon.png" type="Texture" id=2]
 
-[node name="Godot" type="Node2D" index="0"]
+[node name="Unit" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "Z Index" ]

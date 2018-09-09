@@ -13,17 +13,13 @@ func _input(event):
 			var cell = target.map.get_cellv(next_pos)
 			target.move(cell)
 
-		if event.is_action("ui_select"):
-			var unit_under_cursor = target.get_unit_at_pos(target.pos)
-			if unit_under_cursor != null:
-				state_machine.transition("free_state", unit_under_cursor)
-
 		if event.is_action("ui_cancel"):
 			state_machine.transition("free_state", null)
 
 		if event.is_action("ui_select"):
 			if target.get_unit_at_pos(target.pos) == null:
 				var cell = target.map.get_cellv(target.pos)
+
 				if zone.has(cell.pos):
 					self.unit.move(target.pos)
 					state_machine.transition("free_state", null)

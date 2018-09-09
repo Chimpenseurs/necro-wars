@@ -1,11 +1,10 @@
 extends Node2D
 
-var pos = Vector2(4, 2)
-var speed = 300
-
+var pos = Vector2(0, 0)
+var speed = 3
 
 func _ready():
-	self.move(pos)
+	self.pos = self.position /32
 
 func get_pos():
 	return pos
