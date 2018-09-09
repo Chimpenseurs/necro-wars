@@ -74,7 +74,7 @@ func dijkstra(pos, distance_max):
 				if distance != LevelApi.BLOCK  and distance_neighbor != LevelApi.BLOCK:
 					var alt = current.distance + distance
 					# This one checks if we reached the max distance
-					if alt  <= distance_max:
+					if alt  < distance_max:
 						# Finally the last check of dijkstra (see original algorithm)
 						if memory[dcell.cell.pos].distance == LevelApi.INFINITY or alt < memory[dcell.cell.pos].distance:
 							# We update the distance
