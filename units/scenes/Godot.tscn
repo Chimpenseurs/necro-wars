@@ -3,19 +3,16 @@
 [ext_resource path="res://units/scripts/Godot.gd" type="Script" id=1]
 [ext_resource path="res://units/assets/icon.png" type="Texture" id=2]
 
+[node name="Godot" type="Node2D" index="0"]
 
-
-
-[node name="Godot" type="Node2D"]
-
-editor/display_folded = true
-position = Vector2( 64, 0 )
 script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Z Index" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 centered = false
+_sections_unfolded = [ "Offset", "Region", "Transform", "Visibility", "Z Index" ]
 
 
