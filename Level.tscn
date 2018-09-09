@@ -36,17 +36,24 @@ tile_data = PoolIntArray(  )
 [node name="Godot" parent="Units" index="0" instance=ExtResource( 4 )]
 
 position = Vector2( 64, 64 )
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 
-[node name="Godot2" parent="Units" index="1" instance=ExtResource( 4 )]
+[node name="PurpleGodot" parent="Units" index="1" instance=ExtResource( 4 )]
 
+modulate = Color( 1, 0.289063, 0.838928, 1 )
 position = Vector2( 640, 512 )
+_sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
-[node name="Godot3" parent="Units" index="2" instance=ExtResource( 4 )]
+[node name="DarkGodot" parent="Units" index="2" instance=ExtResource( 4 )]
 
+modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 96, 384 )
+_sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
-[node name="Godot4" parent="Units" index="3" instance=ExtResource( 4 )]
+[node name="GreenGodot" parent="Units" index="3" instance=ExtResource( 4 )]
 
+modulate = Color( 0.584411, 0.882813, 0.148285, 1 )
 position = Vector2( 768, 320 )
+_sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
 
