@@ -1,6 +1,6 @@
 extends Node2D
 
-var pos = Vector2(2, 0)
+var pos = Vector2(4, 2)
 var speed = 3
 
 func _ready():

@@ -55,23 +55,6 @@ func _process(delta):
 	brain._process(delta)
 
 func _input(event):
-	if event.is_pressed() :
-		var cursor_movement = Vector2(0, 0)
-		if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down"):
-			if event.is_action("ui_right") :
-				cursor_movement.x += 1
-			elif event.is_action("ui_left") :
-				cursor_movement.x -= 1
-			if event.is_action("ui_up") :
-				cursor_movement.y -= 1
-			elif event.is_action("ui_down") :
-				cursor_movement.y += 1
-
-			var next_pos = self.pos + cursor_movement
-
-			var cell = map.get_cellv(next_pos)
-			if cell.type != "Bedrock":
-				self.move(cell)
 
 	brain._input(event)
 
@@ -95,3 +78,20 @@ func move(cell):
 	self.position = cell.world_pos
 	# Position in the map 
 	self.pos = cell.pos
+
+func get_next_position(event):
+	var cursor_movement = Vector2(0, 0)
+	if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down"):
+		if event.is_action("ui_right") :
+			cursor_movement.x += 1
+		elif event.is_action("ui_left") :
+			cursor_movement.x -= 1
+		if event.is_action("ui_up") :
+			cursor_movement.y -= 1
+		elif event.is_action("ui_down") :
+			cursor_movement.y += 1
+		var next_pos = self.pos + cursor_movement
+
+		return next_pos
+	return null
+
