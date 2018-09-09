@@ -18,6 +18,7 @@ class Dcell:
 	var cell
 	var distance
 	var from
+
 	func _init(cell, d):
 		self.cell = cell
 		self.distance = d
@@ -35,3 +36,9 @@ class Cell:
 		self.pos = p
 		self.type = type
 		self.world_pos = wpos
+
+func refine_dijkstra_zone(zone, max_distance):
+	for k in zone.keys():
+		if not zone[k].accessible or max_distance < zone[k].distance :
+			zone.erase(k)
+	return zone

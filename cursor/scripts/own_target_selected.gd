@@ -1,5 +1,7 @@
 extends "state.gd"
 
+const LevelApi = preload("res://common/scripts/LevelApi.gd")
+
 var unit
 var zone
 
@@ -8,6 +10,7 @@ func _ready():
 
 func _input(event):
 	if event.is_pressed() :
+
 		var next_pos = target.get_next_position(event)
 		if next_pos != null:
 			var cell = target.map.get_cellv(next_pos)
@@ -29,11 +32,18 @@ func _process(delta):
 
 func _on_enter_state(data):
 	self.unit = data
-	var movement_zone = target.level.dijkstra(self.unit.pos, self.unit.speed)
+
+	var movement_zone = target.level.dijkstra(
+		self.unit.pos, 
+		self.unit.speed
+	)
+
 	if movement_zone != null:
-		zone = movement_zone
+		self.zone = movement_zone
+		var att = target.level.get_attack_range(movement_zone, self.unit.attack_range)
+		# target.level.display_zone_movement_and_range(att, self.unit.speed)
 		target.level.display_zone(movement_zone)
-	
+		
 	print("Unit selected: " + str(data))
 
 func _on_leave_state(data):

@@ -22,10 +22,18 @@ func _ready():
 	self.add_child(cursor)
 
 func display_zone(zone):
-	for k in zone.keys(): # k is a pos 
+	for k in zone.keys(): # k is a pos
+		print(" ", zone[k].distance, " ", zone[k].cell.pos)
 		zones.set_cellv(k, 0) # default move zone sprite
 		if zone[k].ennemy :
 			zones.set_cellv(k, 1) # attack zone sprite
+
+func display_zone_movement_and_range(zone, movement_max):
+	for k in zone.keys(): # k is a pos
+		if zone[k].accessible:
+			zones.set_cellv(k, 0) # attack zone sprite
+		else:
+			zones.set_cellv(k, 1) # default move zone sprite
 
 func get_configuration():
 	return level_configuration
@@ -35,7 +43,28 @@ func get_map():
 
 func clear_zones():
 	zones.clear()
-	
+
+func get_attack_range(movement_zone, att_range):
+	var duplicate = movement_zone.duplicate()
+	var stack = []
+
+	for k in movement_zone.keys():
+		stack.append(movement_zone[k])
+
+	while stack.size() > 0:
+		var current = stack.pop_front()
+
+		var neighbors = map.get_neighbors(current.cell.pos)
+
+		for n in neighbors:
+			var new_dcell = LevelApi.Dcell.new(n, current.distance + 1)
+			if !duplicate.has(n.pos) and att_range > new_dcell.distance:
+				stack.append(new_dcell)
+				new_dcell.accessible = false
+				duplicate[n.pos] = new_dcell
+
+	return duplicate
+
 # pos: The initial position on the map to compute dijkstra from
 # distance_max: The size of the zone we want to explore
 func dijkstra(pos, distance_max):
@@ -56,36 +85,27 @@ func dijkstra(pos, distance_max):
 		# We find the minimun in the stack
 		# Can be a point to optimize later
 		var current = find_min_in_array(stack)
+		if current.distance < distance_max:
+			# We ask the map to find all neighbors of the current pos
+			var neighbors = map.get_neighbors(current.cell.pos)
 
-		# We ask the map to find all neighbors of the current pos
-		var neighbors = map.get_neighbors(current.cell.pos)
+			# We get the distance to leave the cell
+			# TODO So if you stop on a map, you get double bonus/malus?
+			var distance = LevelApi.cell_distance(current.cell, "Ground") 
+			var alt = current.distance + distance
 
-		# We get the distance to leave the cell
-		# TODO So if you stop on a map, you get double bonus/malus?
-		var distance = LevelApi.cell_distance(current.cell, "Ground") 
+			for neighbor in neighbors:
+				if !memory.has(neighbor.pos):
+					memory[neighbor.pos] = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
 
-		for neighbor in neighbors:
-			if !memory.has(neighbor.pos):
-				memory[neighbor.pos] = LevelApi.Dcell.new(neighbor, LevelApi.INFINITY)
+				var dcell = memory[neighbor.pos]
 
-			var dcell = memory[neighbor.pos]
-			
-			if dcell.accessible:
-				for u in units :
-					# TODO : parse allies
-					if u.pos != pos and u.pos == dcell.cell.pos:
-						dcell.ennemy = true
-						dcell.accessible = false 
-			
-			
-			if dcell.accessible:
-				# We get the distance from the current
-				var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
-				# We need to check is we can enter/leave the cell
-				if distance != LevelApi.BLOCK  and distance_neighbor != LevelApi.BLOCK:
-					var alt = current.distance + distance
-					# This one checks if we reached the max distance
-					if alt  < distance_max:
+				if dcell.accessible:
+					# We get the distance from the current
+					var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
+					# We need to check is we can enter/leave the cell
+					if distance_neighbor != LevelApi.BLOCK:
+						# This one checks if we reached the max distance
 						# Finally the last check of dijkstra (see original algorithm)
 						if memory[dcell.cell.pos].distance == LevelApi.INFINITY or alt < memory[dcell.cell.pos].distance:
 							# We update the distance
@@ -94,17 +114,11 @@ func dijkstra(pos, distance_max):
 							dcell.from = current
 							# Add the neighbor to the stack
 							stack.append(dcell)
+					else:
+						memory[dcell.cell.pos].accessible = false
 
-				else:
-					memory[dcell.cell.pos].accessible = false
+	return LevelApi.refine_dijkstra_zone(memory, distance_max)
 
-	return refine_dijkstra_zone(memory)
-
-func refine_dijkstra_zone(zone):
-	for k in zone.keys():
-		if not zone[k].accessible and not zone[k].ennemy :
-			zone.erase(k)
-	return zone
 # As Gdscript does not provide priorityqueu,
 # this function extract the min from an array
 func find_min_in_array(array):
