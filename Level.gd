@@ -101,6 +101,13 @@ func dijkstra(pos, distance_max):
 				var dcell = memory[neighbor.pos]
 
 				if dcell.accessible:
+					for u in units :
+					# TODO : parse allies
+						if u.pos != pos and u.pos == dcell.cell.pos:
+							dcell.ennemy = true
+							dcell.accessible = false 
+
+				if dcell.accessible:
 					# We get the distance from the current
 					var distance_neighbor = LevelApi.cell_distance(neighbor, "Ground") 
 					# We need to check is we can enter/leave the cell
