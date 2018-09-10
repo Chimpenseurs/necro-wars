@@ -15,25 +15,25 @@ onready var units = get_node("Units").get_children()
 onready var cursor = cursor_tscn.instance()
 
 func _ready():
+	# Init cursor
 	cursor.set_level(self)
 	cursor.set_units(units)
 	cursor.set_map(self.map)
-	
 	self.add_child(cursor)
 
+func display_circle(circle):
+	for pos in circle:
+		zones.set_cellv(pos, 1) # default move zone sprite
+
 func display_zone(zone):
+	for k in zone.keys():
+		get_circle(zone[k].cell.pos , 1)
+
 	for k in zone.keys(): # k is a pos
 		print(" ", zone[k].distance, " ", zone[k].cell.pos)
 		zones.set_cellv(k, 0) # default move zone sprite
 		if zone[k].ennemy :
 			zones.set_cellv(k, 1) # attack zone sprite
-
-func display_zone_movement_and_range(zone, movement_max):
-	for k in zone.keys(): # k is a pos
-		if zone[k].accessible:
-			zones.set_cellv(k, 0) # attack zone sprite
-		else:
-			zones.set_cellv(k, 1) # default move zone sprite
 
 func get_configuration():
 	return level_configuration
@@ -44,26 +44,35 @@ func get_map():
 func clear_zones():
 	zones.clear()
 
-func get_attack_range(movement_zone, att_range):
-	var duplicate = movement_zone.duplicate()
-	var stack = []
-
+func get_attack_range(movement_zone):
+	var attack_range = []
 	for k in movement_zone.keys():
-		stack.append(movement_zone[k])
+		attack_range += get_circle(movement_zone[k].cell.pos , 1)
+	return attack_range
 
-	while stack.size() > 0:
-		var current = stack.pop_front()
+# get the circle around the character
+func get_circle(pos, radius):
+	
+	var circle = []
+	var x =  0
+	var y = radius
+	
+	while x <= y :
+		
+		for v in [
+			Vector2(x, y), Vector2(y, x), 
+			Vector2(-x, y), Vector2(-y, x), 
+			Vector2(x, -y), Vector2(y, -x), 
+			Vector2(-x, -y), Vector2(-y, -x)
+			]:
+			
+			if not circle.has(v) :
+				circle.append(v+pos)
+		
+		y = y - 1
+		x = x + 1
 
-		var neighbors = map.get_neighbors(current.cell.pos)
-
-		for n in neighbors:
-			var new_dcell = LevelApi.Dcell.new(n, current.distance + 1)
-			if !duplicate.has(n.pos) and att_range > new_dcell.distance:
-				stack.append(new_dcell)
-				new_dcell.accessible = false
-				duplicate[n.pos] = new_dcell
-
-	return duplicate
+	return circle
 
 # pos: The initial position on the map to compute dijkstra from
 # distance_max: The size of the zone we want to explore
