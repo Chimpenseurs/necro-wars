@@ -12,11 +12,6 @@ func _ready():
 func _input(event):
 	if event.is_pressed() :
 
-		var next_pos = target.get_next_position(event)
-		if next_pos != null:
-			var cell = target.map.get_cellv(next_pos)
-			target.move(cell)
-
 		if event.is_action("ui_cancel"):
 			state_machine.transition("free_state", null)
 
@@ -45,7 +40,7 @@ func _on_enter_state(data):
 
 		target.level.display_circle(attack_zone)
 		target.level.display_zone(movement_zone)
-		
+
 	print("Unit selected: " + str(data))
 
 func _on_leave_state(data):

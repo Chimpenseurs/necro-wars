@@ -15,11 +15,30 @@ onready var units = get_node("Units").get_children()
 onready var cursor = cursor_tscn.instance()
 
 func _ready():
+	
+	var camera = Camera2D.new()
+	camera.set_name("Camera")
+	set_camera_limits(camera)
+	
 	# Init cursor
+	cursor.set_camera(camera)
+
 	cursor.set_level(self)
 	cursor.set_units(units)
 	cursor.set_map(self.map)
 	self.add_child(cursor)
+
+func set_camera_limits(camera):
+	var map_limits = $Map/LayerMeta.get_used_rect()
+	var map_cellsize = $Map/LayerMeta.cell_size
+	print(map_limits)
+
+	camera.limit_left = map_limits.position.x * map_cellsize.x
+	camera.limit_right = map_limits.end.x * map_cellsize.x
+	camera.limit_top = map_limits.position.y * map_cellsize.y
+	camera.limit_bottom = map_limits.end.y * map_cellsize.y
+
+	camera.make_current()
 
 func display_circle(circle):
 	for pos in circle:

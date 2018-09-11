@@ -24,11 +24,19 @@ onready var smf = StateMachineFactory.new()
 # Get sprite
 onready var sprite = self.get_child(0)
 
+var camera
 
 func _ready():
 	self.level = self.get_parent()
 	self.conf = level.get_configuration()
 	self.map = level.get_map()
+
+	camera = Camera2D.new()
+	camera.set_name("Camera")
+	camera.make_current()
+	
+	self.add_child(camera)
+	
 	
 	var cell = map.get_cellv(self.position)
 	self.move(cell)
@@ -55,6 +63,12 @@ func _process(delta):
 	brain._process(delta)
 
 func _input(event):
+	if event.is_pressed() :
+		var next_pos = self.get_next_position(event)
+		if next_pos != null:
+			var cell = self.map.get_cellv(next_pos)
+			if cell.type != "Bedrock":
+				self.move(cell)
 
 	brain._input(event)
 
@@ -63,6 +77,9 @@ func set_map(map):
 
 func set_level(level):
 	self.level = level
+
+func set_camera(camera):
+	self.add_child(camera)
 
 func set_units(units):
 	self.units = units
