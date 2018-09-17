@@ -1,4 +1,4 @@
-extends Node2D
+extends "../../player/scripts/abstract_player.gd".Player
 
 const StateMachineFactory = preload("../../../addons/godot-finite-state-machine/state_machine_factory.gd")
 
@@ -37,7 +37,6 @@ func _ready():
 	
 	self.add_child(camera)
 	
-	
 	var cell = map.get_cellv(self.position)
 	self.move(cell)
 
@@ -54,15 +53,29 @@ func _ready():
 			{ "id": "own_target_selected", "state": OwnTargetSelected },
 		],
 		"transitions": [
-			{"state_id": "free_state", "to_states": ["own_target_selected"]},
+			{"state_id": "free_state", "to_states": ["free_state", "own_target_selected"]},
 			{"state_id": "own_target_selected", "to_states": ["free_state"]},
 		]
 	})
 
-func _process(delta): 
+func _physics_process(delta): 
+	pass
+
+func set_inactive():
+	self.set_process(false)
+	self.set_process_input(false)
+	self.hide()
+
+func set_active():
+	self.set_process(true)
+	self.set_process_input(true)
+	self.show()
+
+func _process(delta):
 	brain._process(delta)
 
 func _input(event):
+
 	if event.is_pressed() :
 		var next_pos = self.get_next_position(event)
 		if next_pos != null:
@@ -70,6 +83,10 @@ func _input(event):
 			if cell.type != "Bedrock":
 				self.move(cell)
 
+		if event.is_action("end_turn"):
+			level.end_turn(self)
+			brain.transition("free_state", null)
+			return
 	brain._input(event)
 
 func set_map(map):
@@ -97,6 +114,7 @@ func move(cell):
 	self.pos = cell.pos
 
 func get_next_position(event):
+
 	var cursor_movement = Vector2(0, 0)
 	if event.is_action("ui_right") or event.is_action("ui_left") or event.is_action("ui_up") or event.is_action("ui_down"):
 		if event.is_action("ui_right") :
@@ -112,3 +130,5 @@ func get_next_position(event):
 		return next_pos
 	return null
 
+func set_color(color):
+	self.set_modulate(color)

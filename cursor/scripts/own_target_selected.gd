@@ -36,7 +36,7 @@ func _on_enter_state(data):
 
 	if movement_zone != null:
 		self.movement_zone = movement_zone
-		self.attack_zone = target.level.get_attack_range(movement_zone)
+		self.attack_zone = target.level.get_attack_range(movement_zone, self.unit.attack_range)
 
 		target.level.display_circle(attack_zone)
 		target.level.display_zone(movement_zone)

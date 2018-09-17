@@ -1,7 +1,8 @@
+tool
 extends Node2D
 
-const LevelApi = preload("./common/scripts/LevelApi.gd")
-const cursor_tscn = preload("res://cursor/scenes/Cursor.tscn")
+const LevelApi     = preload("./common/scripts/LevelApi.gd")
+const cursor_tscn  = preload("res://cursor/scenes/Cursor.tscn")
 
 var level_configuration = { "tile_size" : 32 }
 
@@ -12,34 +13,63 @@ onready var zones = get_node("Zones")
 # List of units on map
 onready var units = get_node("Units").get_children()
 
-onready var cursor = cursor_tscn.instance()
+onready var player1 = cursor_tscn.instance()
+onready var player2 = cursor_tscn.instance()
 
-func _ready():
-	
+var player_stack = [ ]
+
+func init_human_player(player, id, color):
 	var camera = Camera2D.new()
 	camera.set_name("Camera")
 	set_camera_limits(camera)
 	
+	player.player_id = id
 	# Init cursor
-	cursor.set_camera(camera)
+	player.set_camera(camera)
 
-	cursor.set_level(self)
-	cursor.set_units(units)
-	cursor.set_map(self.map)
-	self.add_child(cursor)
+	player.set_level(self)
+	player.set_units(units)
+	player.set_map(self.map)
+	player.set_inactive()
+	player.set_color(color)
+	
+	return player
+	
+func _ready():
+	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
+	
+	player_stack.append(self.init_human_player(player2, "p2", c))
+	self.add_child(player2)
+	
+	player_stack.append(self.init_human_player(player1, "p1", c.inverted()))
+	self.add_child(player1)
+	
+	print(player_stack)
+	self.init_level_player()
 
 func set_camera_limits(camera):
 	var map_limits = $Map/LayerMeta.get_used_rect()
 	var map_cellsize = $Map/LayerMeta.cell_size
-	print(map_limits)
+	
 
-	camera.limit_left = map_limits.position.x * map_cellsize.x
+	camera.limit_left = (map_limits.position.x * map_cellsize.x) - 1
 	camera.limit_right = map_limits.end.x * map_cellsize.x
 	camera.limit_top = map_limits.position.y * map_cellsize.y
 	camera.limit_bottom = map_limits.end.y * map_cellsize.y
-
+	
+	camera.zoom = Vector2(0.75, 0.75)
 	camera.make_current()
 
+func init_level_player():
+	var next_player = player_stack.pop_front()
+	next_player.set_active()
+
+func end_turn(player):
+	player.set_inactive()
+	player_stack.append(player)
+	var next_player = player_stack.pop_front()
+	next_player.set_active()
+	
 func display_circle(circle):
 	for pos in circle:
 		zones.set_cellv(pos, 1) # default move zone sprite
@@ -63,10 +93,10 @@ func get_map():
 func clear_zones():
 	zones.clear()
 
-func get_attack_range(movement_zone):
+func get_attack_range(movement_zone, radis):
 	var attack_range = []
 	for k in movement_zone.keys():
-		attack_range += get_circle(movement_zone[k].cell.pos , 1)
+		attack_range += get_circle(movement_zone[k].cell.pos , radis)
 	return attack_range
 
 # get the circle around the character
