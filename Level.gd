@@ -20,9 +20,8 @@ var player_stack = [ ]
 
 func init_human_player(player, id, color):
 	var camera = Camera2D.new()
-	camera.set_name("Camera")
 	set_camera_limits(camera)
-	
+	camera.set_name(id)
 	player.player_id = id
 	# Init cursor
 	player.set_camera(camera)
@@ -30,37 +29,37 @@ func init_human_player(player, id, color):
 	player.set_level(self)
 	player.set_units(units)
 	player.set_map(self.map)
-	player.set_inactive()
+
 	player.set_color(color)
-	
 	return player
 	
 func _ready():
 	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
 	
-	player_stack.append(self.init_human_player(player2, "p2", c))
+	player_stack.append(self.init_human_player(player2, "player1", c))
 	self.add_child(player2)
 	
-	player_stack.append(self.init_human_player(player1, "p1", c.inverted()))
+	player_stack.append(self.init_human_player(player1, "player2", c.inverted()))
 	self.add_child(player1)
 	
-	print(player_stack)
 	self.init_level_player()
 
 func set_camera_limits(camera):
 	var map_limits = $Map/LayerMeta.get_used_rect()
 	var map_cellsize = $Map/LayerMeta.cell_size
 	
-
 	camera.limit_left = (map_limits.position.x * map_cellsize.x) - 1
 	camera.limit_right = map_limits.end.x * map_cellsize.x
 	camera.limit_top = map_limits.position.y * map_cellsize.y
 	camera.limit_bottom = map_limits.end.y * map_cellsize.y
 	
 	camera.zoom = Vector2(0.75, 0.75)
-	camera.make_current()
+
 
 func init_level_player():
+	for player in player_stack:
+		player.set_inactive()
+
 	var next_player = player_stack.pop_front()
 	next_player.set_active()
 
@@ -79,7 +78,6 @@ func display_zone(zone):
 		get_circle(zone[k].cell.pos , 1)
 
 	for k in zone.keys(): # k is a pos
-		print(" ", zone[k].distance, " ", zone[k].cell.pos)
 		zones.set_cellv(k, 0) # default move zone sprite
 		if zone[k].ennemy :
 			zones.set_cellv(k, 1) # attack zone sprite

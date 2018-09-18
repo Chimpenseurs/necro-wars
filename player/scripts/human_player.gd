@@ -1,3 +1,4 @@
+# Class not used delete this file
 extends "abstract_player.gd"
 
 var id

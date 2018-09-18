@@ -27,16 +27,11 @@ onready var sprite = self.get_child(0)
 var camera
 
 func _ready():
+	print("mon id de joueur: ", self.player_id)
 	self.level = self.get_parent()
 	self.conf = level.get_configuration()
 	self.map = level.get_map()
-
-	camera = Camera2D.new()
-	camera.set_name("Camera")
-	camera.make_current()
-	
-	self.add_child(camera)
-	
+		
 	var cell = map.get_cellv(self.position)
 	self.move(cell)
 
@@ -64,18 +59,22 @@ func _physics_process(delta):
 func set_inactive():
 	self.set_process(false)
 	self.set_process_input(false)
+	self.camera.clear_current()
+	self.remove_child(camera)
 	self.hide()
 
 func set_active():
 	self.set_process(true)
 	self.set_process_input(true)
+
+	self.add_child(camera)
+	camera.make_current()
 	self.show()
 
 func _process(delta):
 	brain._process(delta)
 
 func _input(event):
-
 	if event.is_pressed() :
 		var next_pos = self.get_next_position(event)
 		if next_pos != null:
@@ -96,6 +95,8 @@ func set_level(level):
 	self.level = level
 
 func set_camera(camera):
+
+	self.camera = camera
 	self.add_child(camera)
 
 func set_units(units):
