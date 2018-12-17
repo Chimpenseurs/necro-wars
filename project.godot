@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "TileSetCutter" )
+enabled=PoolStringArray( "vnen.tiled_importer" )
 
 [input]
 
@@ -26,3 +26,7 @@ end_turn=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":
 [rendering]
 
 environment/default_environment="res://default_env.tres"
+
+[tiled_importer]
+
+enable_json_format=true

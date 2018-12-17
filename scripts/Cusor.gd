@@ -79,7 +79,9 @@ func _input(event):
 		var next_pos = self.get_next_position(event)
 		if next_pos != null:
 			var cell = self.map.get_cellv(next_pos)
-			if cell.type != "Bedrock":
+			if cell == null:
+				print("loo")
+			elif cell.type != "Bedrock":
 				self.move(cell)
 
 		if event.is_action("end_turn"):

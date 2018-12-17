@@ -3,11 +3,10 @@ extends Node2D
 
 const LevelApi     = preload("scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
+const Level        = preload("res://scenes/level.tscn")
 
 var level_configuration = { "tile_size" : 32 }
 
-# The world map
-onready var map = get_node("Map")
 # Information zones
 onready var zones = get_node("Zones") 
 # List of units on map
@@ -16,7 +15,9 @@ onready var units = get_node("Units").get_children()
 onready var player1 = cursor_tscn.instance()
 onready var player2 = cursor_tscn.instance()
 
+var map
 var player_stack = [ ]
+
 
 func init_human_player(player, id, color):
 	var camera = Camera2D.new()
@@ -34,6 +35,11 @@ func init_human_player(player, id, color):
 	return player
 	
 func _ready():
+	map = Level.instance()
+	map.set_name("Level")
+	map.z_index = -1 # Pas bon ca
+	self.add_child(map)
+	
 	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
 	
 	player_stack.append(self.init_human_player(player2, "player1", c))
@@ -45,8 +51,8 @@ func _ready():
 	self.init_level_player()
 
 func set_camera_limits(camera):
-	var map_limits = $Map/LayerMeta.get_used_rect()
-	var map_cellsize = $Map/LayerMeta.cell_size
+	var map_limits = $Level/LayerMeta.get_used_rect()
+	var map_cellsize = $Level/LayerMeta.cell_size
 	
 	camera.limit_left = (map_limits.position.x * map_cellsize.x) - 1
 	camera.limit_right = map_limits.end.x * map_cellsize.x
