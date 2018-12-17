@@ -1,8 +1,8 @@
 tool
 extends Node2D
 
-const LevelApi     = preload("./common/scripts/LevelApi.gd")
-const cursor_tscn  = preload("res://cursor/scenes/Cursor.tscn")
+const LevelApi     = preload("scripts/LevelApi.gd")
+const cursor_tscn  = preload("res://scenes/Cursor.tscn")
 
 var level_configuration = { "tile_size" : 32 }
 

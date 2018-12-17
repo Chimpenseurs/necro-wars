@@ -1,6 +1,6 @@
-extends "../../player/scripts/abstract_player.gd".Player
+extends "../../scripts/abstract_player.gd".Player
 
-const StateMachineFactory = preload("../../../addons/godot-finite-state-machine/state_machine_factory.gd")
+const StateMachineFactory = preload("../addons/godot-finite-state-machine/state_machine_factory.gd")
 
 # attributes of the cursor
 var pos = Vector2(10, 0)

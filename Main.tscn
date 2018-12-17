@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Level.gd" type="Script" id=1]
-[ext_resource path="res://map/scenes/Map.tscn" type="PackedScene" id=2]
-[ext_resource path="res://map/assets/tilesezones.tres" type="TileSet" id=3]
-[ext_resource path="res://units/scenes/Unit.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/tilesezones.tres" type="TileSet" id=3]
+[ext_resource path="res://scenes/Unit.tscn" type="PackedScene" id=4]
 
-[node name="Level" type="Node2D" index="0"]
+[node name="Main" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -34,6 +34,8 @@ format = 1
 tile_data = PoolIntArray(  )
 
 [node name="Units" type="Node2D" parent="." index="2"]
+
+editor/display_folded = true
 
 [node name="Godot" parent="Units" index="0" groups=[
 "player1",
@@ -65,25 +67,5 @@ _sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 modulate = Color( 0.584411, 0.882813, 0.148285, 1 )
 position = Vector2( 768, 320 )
 _sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
-
-[node name="TileMap" type="TileMap" parent="." index="3"]
-
-mode = 0
-tile_set = null
-cell_size = Vector2( 64, 64 )
-cell_quadrant_size = 16
-cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-cell_half_offset = 2
-cell_tile_origin = 0
-cell_y_sort = false
-cell_clip_uv = false
-collision_use_kinematic = false
-collision_friction = 1.0
-collision_bounce = 0.0
-collision_layer = 1
-collision_mask = 1
-occluder_light_mask = 1
-format = 1
-tile_data = PoolIntArray(  )
 
 

@@ -1,11 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://map/scripts/Map.gd" type="Script" id=1]
-[ext_resource path="res://map/assets/map32.tres" type="TileSet" id=2]
-[ext_resource path="res://map/assets/groundstypes.tres" type="TileSet" id=3]
-[ext_resource path="res://map/scripts/LayerMeta.gd" type="Script" id=4]
+[ext_resource path="res://scripts/Map.gd" type="Script" id=1]
+[ext_resource path="res://assets/map32.tres" type="TileSet" id=2]
+[ext_resource path="res://assets/groundstypes.tres" type="TileSet" id=3]
+[ext_resource path="res://scripts/LayerMeta.gd" type="Script" id=4]
 
-[node name="Map" type="Node2D"]
+
+
+[node name="Map" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 

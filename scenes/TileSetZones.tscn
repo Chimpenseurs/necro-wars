@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://map/assets/EmptySquare.png" type="Texture" id=1]
+[ext_resource path="res://assets/EmptySquare.png" type="Texture" id=1]
+
 
 [node name="TileSetZones" type="Node2D"]
 

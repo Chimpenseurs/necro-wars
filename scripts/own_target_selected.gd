@@ -1,6 +1,6 @@
 extends "state.gd"
 
-const LevelApi = preload("res://common/scripts/LevelApi.gd")
+const LevelApi = preload("res://scripts/LevelApi.gd")
 
 var unit
 var movement_zone

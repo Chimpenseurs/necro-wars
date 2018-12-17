@@ -1,7 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://cursor/scripts/Cusor.gd" type="Script" id=1]
-[ext_resource path="res://map/assets/EmptySquare.png" type="Texture" id=2]
+[ext_resource path="res://scripts/Cusor.gd" type="Script" id=1]
+[ext_resource path="res://assets/EmptySquare.png" type="Texture" id=2]
+
+
 
 [node name="Cursor" type="Node2D" index="0"]
 

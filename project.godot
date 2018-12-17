@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="tacticflesh"
-run/main_scene="res://Level.tscn"
+run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
