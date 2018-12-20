@@ -698,7 +698,7 @@ func build_tileset_for_scene(tilesets, source_path, options):
 			result.create_tile(gid)
 			result.tile_set_name(gid, str(gid) + "_" + str(ts["name"]))
 			
-			if rel_id in ts.tileproperties:
+			if "tileproperties" in ts and rel_id in ts.tileproperties:
 				if 'Name' in ts.tiles[rel_id].properties:
 					var tileset_name = str(ts.tiles[rel_id].properties['Name'])
 					print('Identified Tileset id ' + str(gid) + ' as ' + tileset_name)

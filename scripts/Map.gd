@@ -1,17 +1,17 @@
 extends Node2D
 
 const Level = preload("res://scripts/LevelApi.gd")
-
-
-onready var layer0 = get_node("Layer0")
-onready var layer1 = get_node("Layer1")
-onready var metalayer = get_node("LayerMeta")
+var metalayer
 
 # Information zones
 onready var zones = get_node("Zones")
 
 func _ready():
-	pass
+	self.metalayer = $LayerMeta
+	$LayerMeta.set_script(preload("res://scripts/LayerMeta.gd"))
+	# When using `set_script`, the _ready method is not called
+	# so we call a function fill_up that will init the scripts variables 
+	$LayerMeta.fill_up()
 	
 func get_cellv(pos):
 	var cell_type = metalayer.get_cell_type(pos)
@@ -20,7 +20,7 @@ func get_cellv(pos):
 	return null
 
 func is_valid_cellv(pos):
-	return layer0.get_cellv(pos) != layer0.INVALID_CELL
+	return metalayer.get_cellv(pos) != metalayer.INVALID_CELL
 
 func get_neighbors(pos):
 	var neighbor_poses = [ 
