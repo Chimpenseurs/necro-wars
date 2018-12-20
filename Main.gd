@@ -5,10 +5,13 @@ const LevelApi     = preload("scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
 const Level        = preload("res://scenes/level.tscn")
 
-var level_configuration = { "tile_size" : 32 }
+const zonesTs      = preload("res://assets/tilesezones.tres")
+
+var level_configuration = { "tile_size" : 32, "zone_opacity": 0.7 }
 
 # Information zones
-onready var zones = get_node("Zones") 
+var zones
+
 # List of units on map
 onready var units = get_node("Units").get_children()
 
@@ -18,6 +21,38 @@ onready var player2 = cursor_tscn.instance()
 var map
 var player_stack = [ ]
 
+func init_nodes():
+	self.zones = TileMap.new()
+	self.zones.set_name("Zones")
+	self.zones.cell_size = Vector2(level_configuration["tile_size"], level_configuration["tile_size"])
+	
+	self.zones.tile_set = zonesTs
+	self.zones.modulate = Color(1, 1, 1, level_configuration["zone_opacity"])
+	
+	map = Level.instance()
+	map.set_name("Level")
+	
+	# map.z_index = -1 # 
+	
+	self.add_child(map)
+	self.add_child(zones)
+	
+	# Workaround to deactivate the filter on the imported texture
+	$Level/Layer0.tile_set.tile_get_texture(1).flags = 0
+	$Units.set_as_toplevel(true)
+
+func _ready():
+	self.init_nodes()
+	
+	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
+	
+	player_stack.append(self.init_human_player(player2, "player1", c))
+	self.add_child(player2)
+	
+	player_stack.append(self.init_human_player(player1, "player2", c.inverted()))
+	self.add_child(player1)
+	
+	self.init_level_player()
 
 func init_human_player(player, id, color):
 	var camera = Camera2D.new()
@@ -34,21 +69,7 @@ func init_human_player(player, id, color):
 	player.set_color(color)
 	return player
 	
-func _ready():
-	map = Level.instance()
-	map.set_name("Level")
-	map.z_index = -1 # Pas bon ca
-	self.add_child(map)
-	
-	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
-	
-	player_stack.append(self.init_human_player(player2, "player1", c))
-	self.add_child(player2)
-	
-	player_stack.append(self.init_human_player(player1, "player2", c.inverted()))
-	self.add_child(player1)
-	
-	self.init_level_player()
+
 
 func set_camera_limits(camera):
 	var map_limits = $Level/LayerMeta.get_used_rect()
