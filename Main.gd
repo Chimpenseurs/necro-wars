@@ -44,7 +44,7 @@ func init_nodes():
 	# map.z_index = -1 # 
 	
 	self.add_child(map)
-	self.add_child(zones)
+	self.add_child(self.zones)
 	
 	# TODO: Find a way to di it preperly
 	$Units.set_as_toplevel(true)
@@ -106,18 +106,23 @@ func end_turn(player):
 	next_player.player_init_turn()
 	next_player.set_active()
 	
-func display_circle(circle):
-	for pos in circle:
-		zones.set_cellv(pos, 1) # default move zone sprite
+func display_zone(zone, type = "DEFAULT"):
+	var tile = 0
 
-func display_zone(zone):
-	for k in zone.keys():
-		get_circle(zone[k].cell.pos , 1)
+	if type == "ACCESSIBLE":
+		tile = 1
+	elif type == "DIRECT":
+		tile = 2
+	else:
+		tile = 0
 
+	for pos in zone:
+		zones.set_cellv(pos, tile) # default move zone sprite
+
+func display_dijkstra_zone(zone):
 	for k in zone.keys(): # k is a pos
 		zones.set_cellv(k, 0) # default move zone sprite
-		if zone[k].ennemy :
-			zones.set_cellv(k, 1) # attack zone sprite
+
 
 func get_configuration():
 	return level_configuration
@@ -128,10 +133,13 @@ func get_map():
 func clear_zones():
 	zones.clear()
 
-func get_attack_range(movement_zone, radis):
+func get_attack_range(pos, radis):
+	return get_circle_filled(pos, radis)
+
+func get_attack_range_include_movement_range(movement_zone, radis):
 	var attack_range = []
 	for k in movement_zone.keys():
-		attack_range += get_circle(movement_zone[k].cell.pos , radis)
+		attack_range += get_circle_filled(movement_zone[k].cell.pos , radis)
 	return attack_range
 
 # get the circle around the character
@@ -148,15 +156,22 @@ func get_circle(pos, radius):
 			Vector2(-x, y), Vector2(-y, x), 
 			Vector2(x, -y), Vector2(y, -x), 
 			Vector2(-x, -y), Vector2(-y, -x)
-			]:
+		]:
 			
-			if not circle.has(v) :
+			if not circle.has(v+pos) :
 				circle.append(v+pos)
 		
 		y = y - 1
 		x = x + 1
 
 	return circle
+
+# get the circle around the character
+func get_circle_filled(pos, radius):
+	var results = []
+	for i in range(1, radius):
+		results = results + get_circle(pos, i)
+	return results
 
 # pos: The initial position on the map to compute dijkstra from
 # distance_max: The size of the zone we want to explore
