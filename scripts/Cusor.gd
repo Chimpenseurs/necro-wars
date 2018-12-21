@@ -95,7 +95,7 @@ func set_level(level):
 
 func set_camera(camera):
 	self.camera = camera
-	self.camera.zoom = Vector2(0.5, 0.5)
+	self.camera.zoom = Vector2(1, 1)
 	self.add_child(camera)
 
 func set_units(units):

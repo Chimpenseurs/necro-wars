@@ -24,7 +24,7 @@ var map
 var player_stack = [ ]
 
 func load_tmx_level(source):
-	map = tiled_map_reader.build_scene("res://scenes/level.tmx")
+	map = tiled_map_reader.build_scene("res://scenes/level2.tmx")
 	# Load the script containing the function needed by the map
 	var level_script = preload("res://scripts/Map.gd")
 	map.set_script(level_script)
@@ -40,7 +40,7 @@ func init_nodes():
 	self.zones.tile_set = zonesTs
 	self.zones.modulate = Color(1, 1, 1, level_configuration["zone_opacity"])
 	
-	self.map = self.load_tmx_level("res://scenes/level.tmx")
+	self.map = self.load_tmx_level("res://scenes/level2.tmx")
 	# map.z_index = -1 # 
 	
 	self.add_child(map)
@@ -48,7 +48,7 @@ func init_nodes():
 	
 	# TODO: Find a way to di it preperly
 	$Units.set_as_toplevel(true)
-	map.get_node("LayerSky").set_as_toplevel(true)
+	self.map.get_node("LayerSky").set_as_toplevel(true)
 	self.zones.set_as_toplevel(true)
 
 func _ready():
@@ -233,7 +233,7 @@ func get_path_from_dijkstra(memory, target_pos):
 
 	var backtrack = target_cell
 	while backtrack != null:
-		path.append(backtrack.cell.pos)
+		path.append(backtrack.cell)
 		backtrack = backtrack.from
 	return path
 
