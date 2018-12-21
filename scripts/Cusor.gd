@@ -31,7 +31,6 @@ func _ready():
 	self.level = self.get_parent()
 	self.conf = level.get_configuration()
 	self.map = level.get_map()
-		
 	var cell = map.get_cellv(self.position)
 	self.move(cell)
 
@@ -53,8 +52,6 @@ func _ready():
 		]
 	})
 
-func _physics_process(delta): 
-	pass
 
 func set_inactive():
 	self.set_process(false)
@@ -73,7 +70,7 @@ func set_active():
 
 func _process(delta):
 	brain._process(delta)
-
+	
 func _input(event):
 	if event.is_pressed() :
 		var next_pos = self.get_next_position(event)

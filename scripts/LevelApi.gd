@@ -36,9 +36,3 @@ class Cell:
 		self.pos = p
 		self.type = type
 		self.world_pos = wpos
-
-func refine_dijkstra_zone(zone, max_distance):
-	for k in zone.keys():
-		if not zone[k].accessible or max_distance < zone[k].distance :
-			zone.erase(k)
-	return zone

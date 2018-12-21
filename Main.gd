@@ -4,9 +4,7 @@ extends Node2D
 const LevelApi     = preload("scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
 const Level        = preload("res://scenes/level.tscn")
-
 const zonesTs      = preload("res://assets/tilesezones.tres")
-
 
 const TiledMapReader = preload("res://scripts/tiledmap_reader_adapter.gd")
 
@@ -31,6 +29,7 @@ func load_tmx_level(source):
 	var level_script = preload("res://scripts/Map.gd")
 	map.set_script(level_script)
 	map.set_name("Level")
+
 	return map
 
 func init_nodes():
@@ -47,7 +46,10 @@ func init_nodes():
 	self.add_child(map)
 	self.add_child(zones)
 	
+	# TODO: Find a way to di it preperly
 	$Units.set_as_toplevel(true)
+	map.get_node("LayerSky").set_as_toplevel(true)
+	self.zones.set_as_toplevel(true)
 
 func _ready():
 	self.init_nodes()
@@ -77,8 +79,6 @@ func init_human_player(player, id, color):
 
 	player.set_color(color)
 	return player
-	
-
 
 func set_camera_limits(camera):
 	var map_limits = $Level/LayerMeta.get_used_rect()
@@ -95,14 +95,15 @@ func set_camera_limits(camera):
 func init_level_player():
 	for player in player_stack:
 		player.set_inactive()
-
 	var next_player = player_stack.pop_front()
 	next_player.set_active()
+
 
 func end_turn(player):
 	player.set_inactive()
 	player_stack.append(player)
 	var next_player = player_stack.pop_front()
+	next_player.player_init_turn()
 	next_player.set_active()
 	
 func display_circle(circle):
@@ -215,8 +216,26 @@ func dijkstra(pos, distance_max):
 							stack.append(dcell)
 					else:
 						memory[dcell.cell.pos].accessible = false
+	# At the end, we need to select only available nodes
+	# beacause in order to work, dijkstra needs to loop through more
+	# cells than the final results
+	for k in memory.keys():
+		if not memory[k].accessible or distance_max < memory[k].distance :
+			memory.erase(k)
+	return memory
 
-	return LevelApi.refine_dijkstra_zone(memory, distance_max)
+func get_path_from_dijkstra(memory, target_pos):
+	var target_cell = null
+	var path = []
+	for key in memory.keys():
+		if memory[key].cell.pos == target_pos:
+			target_cell = memory[key]
+
+	var backtrack = target_cell
+	while backtrack != null:
+		path.append(backtrack.cell.pos)
+		backtrack = backtrack.from
+	return path
 
 # As Gdscript does not provide priorityqueu,
 # this function extract the min from an array
