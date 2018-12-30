@@ -47,12 +47,18 @@ func _input(event):
 					self.move_unit_to(target.pos)
 					# state_machine.transition("free_state", null)
 			elif under_cusor != null:
+				# We check the zone
 				if !target.player_id in under_cusor.get_groups():
+					# If the unit is in range
 					if attack_zone_direct.has(cell.pos):
 						self.unit.attack(under_cusor)
 
 				else:
 					print("ally")
+
+func unit_attaque_weapon(units, target):
+	if self.unit.attaque_point > 0:
+		self.unit.attack(target)
 
 func move_unit_to(target_pos):
 	var path = target.level.get_path_from_dijkstra(self.movement_zone, target_pos)

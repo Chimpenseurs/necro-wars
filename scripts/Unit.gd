@@ -5,16 +5,22 @@ signal finish_moving
 const LevelApi = preload("res://scripts/LevelApi.gd")
 
 var stats = {
-	"base_life": 100,
-	"movement": 4,
+	"life": 100,
+	# Base stats are the stats dependent of the turn
+	# and are reseted at each begining of a new turn
+	"base_movement": 4,
+	"base_action_point": 1,
+
 	"attack_range": 1,
 	"damage": 50,
-	"unit_type": "Ground"
+	"unit_type": "Ground",
 }
 
+
 var pos = Vector2(0, 0)
-var movement # TODO : separate speed and move range
-var attack_range 
+var action_point
+var movement
+var attack_range
 var type
 var life
 
@@ -25,12 +31,14 @@ var speed_animation = 1/5
 var wait = 0
 
 func _init_stats(stats):
+	self.life = stats.life
 	self.type = stats.unit_type
 	self.attack_range = stats.attack_range
-	self.life = stats.base_life
+	self.action_point = stats.base_action_point
 
 func init_for_new_turn():
-	self.movement = stats["movement"]
+	self.movement = stats.base_movement
+	self.action_point = stats.base_action_point
 
 func _ready():
 	self._init_stats(stats)
@@ -45,6 +53,12 @@ func die():
 	self.queue_free()
 
 func attack(target_unit):
+	if action_point == 0:
+		print("can't attack, not more action point...")
+		return
+
+	self.action_point = self.action_point - 1
+	
 	target_unit.life = max(target_unit.life - self.stats.damage, 0)
 	if target_unit.life == 0:
 		target_unit.die()
