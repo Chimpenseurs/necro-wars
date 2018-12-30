@@ -1,7 +1,7 @@
 tool
 extends Node2D
 
-const LevelApi     = preload("scripts/LevelApi.gd")
+const LevelApi     = preload("res://scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
 
 const zonesTs      = preload("res://assets/tilesezones.tres")
