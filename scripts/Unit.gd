@@ -7,7 +7,7 @@ const LevelApi = preload("res://scripts/LevelApi.gd")
 var stats = {
 	"base_life": 100,
 	"movement": 4,
-	"attack_range": 3,
+	"attack_range": 1,
 	"damage": 50,
 	"unit_type": "Ground"
 }
@@ -41,8 +41,13 @@ func _ready():
 func get_pos():
 	return pos
 
+func die():
+	self.queue_free()
+
 func attack(target_unit):
-	target_unit.life = self.stats.damage
+	target_unit.life = max(target_unit.life - self.stats.damage, 0)
+	if target_unit.life == 0:
+		target_unit.die()
 
 func _process(delta):
 	if is_moving:

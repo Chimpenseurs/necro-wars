@@ -50,7 +50,7 @@ func _input(event):
 				if !target.player_id in under_cusor.get_groups():
 					if attack_zone_direct.has(cell.pos):
 						self.unit.attack(under_cusor)
-						print("ayaaa")
+
 				else:
 					print("ally")
 

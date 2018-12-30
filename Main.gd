@@ -3,18 +3,15 @@ extends Node2D
 
 const LevelApi     = preload("scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
-const Level        = preload("res://scenes/level.tscn")
+
 const zonesTs      = preload("res://assets/tilesezones.tres")
 
 const TiledMapReader = preload("res://scripts/tiledmap_reader_adapter.gd")
 
-var level_configuration = { "tile_size" : 32, "zone_opacity": 0.7 }
+var level_configuration = { "tile_size" : 32, "zone_opacity": 0.5 }
 
 # Information zones
 var zones
-
-# List of units on map
-onready var units = get_node("Units").get_children()
 
 onready var tiled_map_reader = TiledMapReader.new()
 onready var player1 = cursor_tscn.instance()
@@ -24,7 +21,7 @@ var map
 var player_stack = [ ]
 
 func load_tmx_level(source):
-	map = tiled_map_reader.build_scene("res://scenes/level2.tmx")
+	map = tiled_map_reader.build_scene("res://levels/level2.tmx")
 	# Load the script containing the function needed by the map
 	var level_script = preload("res://scripts/Map.gd")
 	map.set_script(level_script)
@@ -53,7 +50,7 @@ func init_nodes():
 
 func _ready():
 	self.init_nodes()
-	
+
 	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
 	
 	player_stack.append(self.init_human_player(player2, "player1", c))
@@ -74,7 +71,7 @@ func init_human_player(player, id, color):
 	player.set_camera(camera)
 
 	player.set_level(self)
-	player.set_units(units)
+
 	player.set_map(self.map)
 
 	player.set_color(color)
@@ -91,13 +88,14 @@ func set_camera_limits(camera):
 	
 	camera.zoom = Vector2(0.75, 0.75)
 
-
 func init_level_player():
 	for player in player_stack:
 		player.set_inactive()
 	var next_player = player_stack.pop_front()
 	next_player.set_active()
 
+func get_units():
+	return get_node("Units").get_children()
 
 func end_turn(player):
 	player.set_inactive()
@@ -108,7 +106,6 @@ func end_turn(player):
 	
 func display_zone(zone, type = "DEFAULT"):
 	var tile = 0
-
 	if type == "ACCESSIBLE":
 		tile = 1
 	elif type == "DIRECT":
@@ -169,7 +166,7 @@ func get_circle(pos, radius):
 # get the circle around the character
 func get_circle_filled(pos, radius):
 	var results = []
-	for i in range(1, radius):
+	for i in range(1, radius + 1):
 		results = results + get_circle(pos, i)
 	return results
 
@@ -209,7 +206,7 @@ func dijkstra(pos, distance_max):
 				var dcell = memory[neighbor.pos]
 
 				if dcell.accessible:
-					for u in units :
+					for u in self.get_units():
 					# TODO : parse allies
 						if u.pos != pos and u.pos == dcell.cell.pos:
 							dcell.ennemy = true

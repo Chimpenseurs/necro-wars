@@ -7,7 +7,6 @@ var pos = Vector2(10, 0)
 
 var map
 var level
-var units
 var conf
 
 # please find another way
@@ -98,15 +97,14 @@ func set_camera(camera):
 	self.camera.zoom = Vector2(1, 1)
 	self.add_child(camera)
 
-func set_units(units):
-	self.units = units
-
 func get_unit_at_pos(pos):
+	var units = level.get_units()
 	for unit in units:
 		if unit.get_pos() == pos:
 			return unit
 	return null
-	
+
+
 func move(cell):
 	# Position in pixel
 	self.position = cell.world_pos
