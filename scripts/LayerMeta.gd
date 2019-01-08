@@ -7,7 +7,7 @@ func fill_up():
 	print(str(self.get_meta_list()))
 	for id in ids:
 		var name = self.tile_set.tile_get_name(id)
-		print(id, " ", name)
+		# print(id, " ", name)
 		name_to_id[id] = name
 
 func _ready():

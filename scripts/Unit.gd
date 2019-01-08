@@ -43,7 +43,7 @@ func init_for_new_turn():
 func _ready():
 	self._init_stats(stats)
 	self.init_for_new_turn()
-
+	# Position is the engine position
 	self.pos = self.position / 32
 
 func get_pos():

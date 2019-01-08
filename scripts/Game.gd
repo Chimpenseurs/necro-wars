@@ -1,6 +1,9 @@
 tool
 extends Node2D
 
+# Emitted when a new turn if begining
+signal sigBeginTurn
+
 const LevelApi     = preload("res://scripts/LevelApi.gd")
 const cursor_tscn  = preload("res://scenes/Cursor.tscn")
 
@@ -14,11 +17,17 @@ var level_configuration = { "tile_size" : 32, "zone_opacity": 0.5 }
 var zones
 
 onready var tiled_map_reader = TiledMapReader.new()
+
 onready var player1 = cursor_tscn.instance()
 onready var player2 = cursor_tscn.instance()
 
 var map
 var player_stack = [ ]
+var turn_count = 0
+
+func init_gui():
+	var gui = $Gui
+	self.connect("sigBeginTurn", gui, "update_turn_counter")
 
 func load_tmx_level(source):
 	map = tiled_map_reader.build_scene("res://levels/level2.tmx")
@@ -53,13 +62,14 @@ func _ready():
 
 	var c = Color(0.2, 1.0, .7, .8) # a color of an RGBA(51, 255, 178, 204)
 	
-	player_stack.append(self.init_human_player(player2, "player1", c))
-	self.add_child(player2)
-	
-	player_stack.append(self.init_human_player(player1, "player2", c.inverted()))
+	player_stack.append(self.init_human_player(player1, "player1", c))
 	self.add_child(player1)
 	
+	player_stack.append(self.init_human_player(player2, "player2", c.inverted()))
+	self.add_child(player2)
+	
 	self.init_level_player()
+	self.init_gui()
 
 func init_human_player(player, id, color):
 	var camera = Camera2D.new()
@@ -71,7 +81,6 @@ func init_human_player(player, id, color):
 	player.set_camera(camera)
 
 	player.set_level(self)
-
 	player.set_map(self.map)
 
 	player.set_color(color)
@@ -103,6 +112,8 @@ func end_turn(player):
 	var next_player = player_stack.pop_front()
 	next_player.player_init_turn()
 	next_player.set_active()
+	turn_count += 1
+	self.emit_signal("sigBeginTurn", turn_count)
 	
 func display_zone(zone, type = "DEFAULT"):
 	var tile = 0

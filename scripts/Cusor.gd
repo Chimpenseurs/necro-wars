@@ -1,4 +1,4 @@
-extends "../../scripts/abstract_player.gd".Player
+extends "res:///scripts/abstract_player.gd".Player
 
 const StateMachineFactory = preload("../addons/godot-finite-state-machine/state_machine_factory.gd")
 

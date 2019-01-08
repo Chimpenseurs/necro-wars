@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/Unit.gd" type="Script" id=1]
-[ext_resource path="res://assets/icon.png" type="Texture" id=2]
+[ext_resource path="res://assets/char.png" type="Texture" id=2]
 
 [node name="Unit" type="Node2D"]
 
@@ -10,10 +10,10 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-position = Vector2( 4, 4 )
-scale = Vector2( 0.375, 0.375 )
 texture = ExtResource( 2 )
 centered = false
-_sections_unfolded = [ "Offset", "Region", "Transform", "Visibility", "Z Index" ]
+offset = Vector2( -16, -32 )
+region_enabled = true
+region_rect = Rect2( 64, 128, 64, 64 )
 
 

@@ -9,6 +9,7 @@ var attack_zone_possible
 # The direct zone, that can be access
 var attack_zone_direct
 
+# We update the state of the unit if its position changed
 func _position_changed():
 	print(self.unit.movement)
 	target.level.clear_zones()

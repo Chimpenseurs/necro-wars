@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Unit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Skeleton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Gui.gd" type="Script" id=4]
+[ext_resource path="res://assets/icon.png" type="Texture" id=5]
 
-[node name="Game" type="YSort"]
+[node name="Game" type="YSort" index="0"]
 
 sort_enabled = true
 script = ExtResource( 1 )
@@ -22,7 +25,62 @@ _sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 ] instance=ExtResource( 2 )]
 
 modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 96, 96 )
+position = Vector2( 640, 96 )
 _sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
+
+[node name="Skeleton" parent="Units" index="2" groups=[
+"player1",
+] instance=ExtResource( 3 )]
+
+[node name="Gui" type="CanvasLayer" parent="." index="1"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+script = ExtResource( 4 )
+
+[node name="TurnCounter" type="Label" parent="Gui" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="PanelContainer" type="PanelContainer" parent="Gui" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 492.0
+margin_right = 415.0
+margin_bottom = 599.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Sprite" type="Sprite" parent="Gui/PanelContainer" index="0"]
+
+visible = false
+position = Vector2( 37.6734, 35.4573 )
+texture = ExtResource( 5 )
 
 
